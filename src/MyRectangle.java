@@ -6,6 +6,7 @@ import java.util.Properties;
 class MyRectangle implements com.tranzmate.exercise.IRectangle {
 
     private int x1, y1, x2, y2;
+    private int index;
 
     public MyRectangle(int x1, int y1, int x2, int y2) {
         this.x1 = x1;
@@ -46,8 +47,13 @@ class MyRectangle implements com.tranzmate.exercise.IRectangle {
         return prop;
     }
 
-    public boolean isRectangleInXY(int x, int y) {
-        return (x >= getLeft() && x <= getRight() && y >= getBottom() && y <= getTop());
+    public int getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(int index) {
+        if (this.index == 0)
+            this.index = index;
     }
 
     @Override

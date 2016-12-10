@@ -10,9 +10,7 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
     private MyRectangle bounds;
     private MyRectangle mostTop;
     private Collection<IRectangle> rectangles;
-    //private ArrayList arrFriends = new ArrayList();
     private MyRectangelesStore[] arrFriends = new MyRectangelesStore[4];
-
 
     @Override
     public void initialize(IRectangle bounds, Collection<IRectangle> rectangles) {
@@ -21,9 +19,10 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
         MyRectangle tmpRec;
         boolean found = false;
 
-        //this.mostTop;
         for (int i = rectangles.size() - 1; i >= 0 && !found; i--) {
             tmpRec = (MyRectangle) rectangles.toArray()[i];
+            tmpRec.setIndex(i + 1);
+
             if (isAHofefB(tmpRec, (MyRectangle) bounds)) {
                 this.mostTop = tmpRec;
                 found = true;
@@ -31,10 +30,7 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
         }
 
         if (found) {
-            //System.out.println("this.mostTop - " + this.mostTop.getProperties());
-
             if (!isACoversB(this.mostTop, (MyRectangle) bounds)) {
-                //System.out.println("need recursia here ....");
 
                 // LEFT
                 if (bounds.getLeft() < this.mostTop.getLeft()) {
@@ -93,13 +89,13 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
                 r = this.mostTop;
             else {
                 if (x < this.mostTop.getLeft())
-                    r = (MyRectangle) this.arrFriends[0].findRectangleAt(x, y); // NEED TO FILL
-                else if (x > this.mostTop.getRight())
-                    r = (MyRectangle) this.arrFriends[3].findRectangleAt(x, y); // NEED TO FILL
-                else if (y < this.mostTop.getBottom())
-                    r = (MyRectangle) this.arrFriends[2].findRectangleAt(x, y); // NEED TO FILL
+                    r = (MyRectangle) this.arrFriends[0].findRectangleAt(x, y);
                 else if (y > this.mostTop.getTop())
-                    r = (MyRectangle) this.arrFriends[1].findRectangleAt(x, y); // NEED TO FILL
+                    r = (MyRectangle) this.arrFriends[1].findRectangleAt(x, y);
+                else if (y < this.mostTop.getBottom())
+                    r = (MyRectangle) this.arrFriends[2].findRectangleAt(x, y);
+                else if (x > this.mostTop.getRight())
+                    r = (MyRectangle) this.arrFriends[3].findRectangleAt(x, y);
             }
         }
 
@@ -107,11 +103,11 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
     }
 
     public MyRectangle getBounds() {
-        return bounds;
+        return this.bounds;
     }
 
     public Collection<IRectangle> getRectangles() {
-        return rectangles;
+        return this.rectangles;
     }
 
     private boolean isXYinRec(MyRectangle rec, int x, int y) {

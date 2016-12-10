@@ -11,32 +11,29 @@ public class Main {
 
     public static void main(String[] args) {
 
-        MyRectangle borders = new MyRectangle(0, 0, 100, 100);
-
-        List lnkLst = new LinkedList();
-        lnkLst.add(new MyRectangle(3, 0, 10, 10));
-        lnkLst.add(new MyRectangle(2, 4, 6, 6));
-        lnkLst.add(new MyRectangle(3, 0, 5, 10));
-
+        MyRectangle borders = new MyRectangle(0, 0, 10, 10);
+        MyRectangelesStore store = new MyRectangelesStore();
+        LinkedList lnkLst = new LinkedList();
 
         // create a store of rectangles
-        MyRectangelesStore k1 = new MyRectangelesStore();
-        k1.initialize(borders, lnkLst);
+        lnkLst.add(new MyRectangle(3, 0, 10, 10)); // {Top=10, Left=3, Bottom=0, Right=10}
+        lnkLst.add(new MyRectangle(2, 4, 6, 6)); // {Top=6, Left=2, Bottom=4, Right=6}
+        lnkLst.add(new MyRectangle(3, 0, 5, 10)); // {Top=10, Left=3, Bottom=0, Right=5}
 
-        int x = 10;
-        int y = 10;
+        fillStoreOneDot(lnkLst, 5, 5);
+        //fillStoreRand(borders, lnkLst);
 
-        IRectangle result = k1.findRectangleAt(x, y);
+        // initialize the store with all the Rectangles in the list
+        store.initialize(borders, lnkLst);
 
-        if (result != null) {
-            MyRectangle mostTop = (MyRectangle) result;
+        printBorders(store);
+        //printAllXY(store);
+        printAllTheCollection(store);
+    }
 
-            System.out.println("The MyRectangle in (" + x + "," + y + ") is - " + mostTop.getProperties());
-        } else
-            System.out.println("There is no MyRectangle at (" + x + "," + y + ")");
-
-
+    private static void fillStoreRand(MyRectangle borders, LinkedList lnkLst) {
         MyRectangle y3;
+
         for (int i = 0; i < 10; i++) {
             y3 = new MyRectangle(randInt(0, borders.getRight()),
                     randInt(0, borders.getTop()),
@@ -44,28 +41,68 @@ public class Main {
                     randInt(0, borders.getTop()));
             lnkLst.add(y3);
         }
-        k1.initialize(borders, lnkLst);
-
-        IRectangle rec;
-        int x1;
-        int y1;
-        for (int i = 0; i < 10; i++) {
-            x1 = randInt(0, borders.getRight());
-            y1 = randInt(0, borders.getTop());
-            rec = k1.findRectangleAt(x1, y1);
-            if (rec != null)
-                System.out.println("(" + x1 + "," + y1 + ") " + rec);
-            else
-                System.out.println("(" + x1 + "," + y1 + ") there is nothing");
-
-        }
-
-        //printMat();
-        //chec
     }
 
-    public static void printMat() {
+    private static void fillStoreOneDot(LinkedList lnkLst, int x, int y) {
+        for (int i = 0; i < 88; i++) {
+            lnkLst.add(new MyRectangle(x, y, x, y));
+        }
+    }
 
+    private static void printBorders(MyRectangelesStore store) {
+        MyRectangle item = store.getBounds();
+        IRectangle rec;
+        MyRectangle myRec;
+        int index;
+
+        for (int i = item.getLeft(); i <= item.getRight(); i++) {
+            for (int j = item.getBottom(); j <= item.getTop(); j++) {
+                rec = store.findRectangleAt(i, j);
+
+                if (rec != null) {
+                    myRec = (MyRectangle) rec;
+                    index = myRec.getIndex();
+                } else
+                    index = 0;
+                System.out.format("%3d", index);
+            }
+            System.out.println();
+        }
+    }
+
+    private static void printAllXY(MyRectangelesStore store) {
+        MyRectangle item = store.getBounds();
+        IRectangle rec;
+        MyRectangle myRec;
+        int index;
+
+        for (int i = item.getLeft(); i <= item.getRight(); i++) {
+            for (int j = item.getBottom(); j <= item.getTop(); j++) {
+                rec = store.findRectangleAt(i, j);
+                if (rec != null) {
+                    myRec = (MyRectangle) rec;
+                    index = myRec.getIndex();
+                } else
+                    index = 0;
+
+                if (index != 0) {
+                    System.out.println("(" + i + "," + j + ") - " + index + " " +
+                            rec.getProperties());
+                } else
+                    System.out.println("(" + i + "," + j + ") - NONE");
+            }
+        }
+    }
+
+    private static void printAllTheCollection(MyRectangelesStore store) {
+        MyRectangle myRec;
+        int index;
+
+        for (IRectangle item : store.getRectangles()) {
+            myRec = (MyRectangle) item;
+            myRec.getProperties();
+            System.out.println("Rec #" + myRec.getIndex() + " - " + myRec.getProperties());
+        }
     }
 
     private static int randInt(int min, int max) {
