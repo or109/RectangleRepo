@@ -61,13 +61,14 @@ public class Main {
         }
 
         //printMat();
+        //chec
     }
 
     public static void printMat() {
 
     }
 
-    public static int randInt(int min, int max) {
+    private static int randInt(int min, int max) {
 
         // Usually this can be a field rather than a method variable
         Random rand = new Random();
