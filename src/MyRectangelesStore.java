@@ -10,7 +10,7 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
     private MyRectangle bounds;
     private MyRectangle mostTop;
     private Collection<IRectangle> rectangles;
-    private MyRectangelesStore[] arrFriends = new MyRectangelesStore[4];
+    private MyRectangelesStore[] arrFriends = new MyRectangelesStore[4]; // [left, top, bottom, right]
 
     @Override
     public void initialize(IRectangle bounds, Collection<IRectangle> rectangles) {
@@ -19,18 +19,20 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
         MyRectangle tmpRec;
         boolean found = false;
 
+        // Get the last relevant (in borders) Rectangle
         for (int i = rectangles.size() - 1; i >= 0 && !found; i--) {
             tmpRec = (MyRectangle) rectangles.toArray()[i];
             tmpRec.setIndex(i + 1);
 
-            if (isAHofefB(tmpRec, (MyRectangle) bounds)) {
+            if (checkIfAHofefB(tmpRec, (MyRectangle) bounds)) {
                 this.mostTop = tmpRec;
                 found = true;
             }
         }
 
+        // Check if there is one Rectangle (in borders)
         if (found) {
-            if (!isACoversB(this.mostTop, (MyRectangle) bounds)) {
+            if (!checkIfACoversB(this.mostTop, (MyRectangle) bounds)) {
 
                 // LEFT
                 if (bounds.getLeft() < this.mostTop.getLeft()) {
@@ -82,24 +84,24 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
 
     @Override
     public IRectangle findRectangleAt(int x, int y) {
-        MyRectangle r = null;
+        MyRectangle rec = null;
 
         if (this.mostTop != null) {
             if (isXYinRec(this.mostTop, x, y))
-                r = this.mostTop;
+                rec = this.mostTop;
             else {
                 if (x < this.mostTop.getLeft())
-                    r = (MyRectangle) this.arrFriends[0].findRectangleAt(x, y);
+                    rec = (MyRectangle) this.arrFriends[0].findRectangleAt(x, y);
                 else if (y > this.mostTop.getTop())
-                    r = (MyRectangle) this.arrFriends[1].findRectangleAt(x, y);
+                    rec = (MyRectangle) this.arrFriends[1].findRectangleAt(x, y);
                 else if (y < this.mostTop.getBottom())
-                    r = (MyRectangle) this.arrFriends[2].findRectangleAt(x, y);
+                    rec = (MyRectangle) this.arrFriends[2].findRectangleAt(x, y);
                 else if (x > this.mostTop.getRight())
-                    r = (MyRectangle) this.arrFriends[3].findRectangleAt(x, y);
+                    rec = (MyRectangle) this.arrFriends[3].findRectangleAt(x, y);
             }
         }
 
-        return r;
+        return rec;
     }
 
     public MyRectangle getBounds() {
@@ -115,18 +117,18 @@ public class MyRectangelesStore implements com.tranzmate.exercise.IRectanglesSto
                 (y >= rec.getBottom() && y <= rec.getTop());
     }
 
-    private boolean isAHofefB(MyRectangle recA, MyRectangle recB) {
-        return isAHasPinaB(recA, recB) || isAHasPinaB(recB, recA);
+    private boolean checkIfAHofefB(MyRectangle recA, MyRectangle recB) {
+        return checkIfAHasPinaB(recA, recB) || checkIfAHasPinaB(recB, recA);
     }
 
-    private boolean isAHasPinaB(MyRectangle recA, MyRectangle recB) {
+    private boolean checkIfAHasPinaB(MyRectangle recA, MyRectangle recB) {
         return isXYinRec(recA, recB.getLeft(), recB.getBottom()) ||
                 isXYinRec(recA, recB.getLeft(), recB.getTop()) ||
                 isXYinRec(recA, recB.getRight(), recB.getTop()) ||
                 isXYinRec(recA, recB.getRight(), recB.getBottom());
     }
 
-    private boolean isACoversB(MyRectangle recA, MyRectangle recB) {
+    private boolean checkIfACoversB(MyRectangle recA, MyRectangle recB) {
         return isXYinRec(recA, recB.getLeft(), recB.getBottom()) &&
                 isXYinRec(recA, recB.getRight(), recB.getTop());
     }

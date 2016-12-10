@@ -14,27 +14,31 @@ public class Main {
         MyRectangelesStore store = new MyRectangelesStore();
         LinkedList lnkLst = new LinkedList();
 
-        // create a store of rectangles
-        lnkLst.add(new MyRectangle(3, 0, 10, 10)); // {Top=10, Left=3, Bottom=0, Right=10}
-        lnkLst.add(new MyRectangle(2, 4, 6, 6)); // {Top=6, Left=2, Bottom=4, Right=6}
-        lnkLst.add(new MyRectangle(3, 0, 5, 10)); // {Top=10, Left=3, Bottom=0, Right=5}
-
+        // Create a store of rectangles
+        fillStoreStatic(lnkLst);
+        fillStoreRand(borders, lnkLst);
         fillStoreOneDot(lnkLst, 5, 5);
-        //fillStoreRand(borders, lnkLst);
 
-        // initialize the store with all the Rectangles in the list
+        // Initialize the store with all the Rectangles in the list
         store.initialize(borders, lnkLst);
 
         printBorders(store);
-        //printAllXY(store);
+        printAllXY(store);
         printAllTheCollection(store);
+    }
+
+    private static void fillStoreStatic(LinkedList lnkLst) {
+        lnkLst.add(new MyRectangle(3, 0, 10, 10)); // {Top=10, Left=3, Bottom=0, Right=10}
+        lnkLst.add(new MyRectangle(2, 4, 6, 6)); // {Top=6, Left=2, Bottom=4, Right=6}
+        lnkLst.add(new MyRectangle(3, 0, 5, 10)); // {Top=10, Left=3, Bottom=0, Right=5}
     }
 
     private static void fillStoreRand(MyRectangle borders, LinkedList lnkLst) {
         MyRectangle y3;
 
         for (int i = 0; i < 10; i++) {
-            y3 = new MyRectangle(randInt(0, borders.getRight()),
+            y3 = new MyRectangle(
+                    randInt(0, borders.getRight()),
                     randInt(0, borders.getTop()),
                     randInt(0, borders.getRight()),
                     randInt(0, borders.getTop()));
@@ -43,7 +47,7 @@ public class Main {
     }
 
     private static void fillStoreOneDot(LinkedList lnkLst, int x, int y) {
-        for (int i = 0; i < 88; i++) {
+        for (int i = 0; i < 80; i++) {
             lnkLst.add(new MyRectangle(x, y, x, y));
         }
     }
